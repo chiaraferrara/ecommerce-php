@@ -1,9 +1,10 @@
 .wrapper{
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
     font-family: 'Open Sans', sans-serif;
 }
 
 .card{
     width: 150px;
+    margin: 10px;
 }
