@@ -30,7 +30,7 @@ class Product
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            
+
 
         );
 
@@ -54,64 +54,56 @@ $products = [];
 echo "<script>";
 echo "function addToCart(product){";
 echo "var cart = [];";
-echo "var cartFromSS = sessionStorage.getItem('cart') || [];"; //prendiamo l'array dal sessionStorage
-echo "if(cartFromSS.length > 0){"; //se è già popolato
-echo "cart = JSON.parse(cartFromSS);"; //il parse lo trasforma in un array
-echo "const foundIndex = cart.findIndex(p => p.id === product.id);"; //cerca l'indice del prodotto
-echo "if(foundIndex > -1){"; //se lo trova
-echo "cart[foundIndex].quantity++;"; //aumenta la quantità
+echo "var cartFromSS = sessionStorage.getItem('cart') || [];";
+echo "if(cartFromSS.length > 0){";
+echo "cart = JSON.parse(cartFromSS);";
+echo "const foundIndex = cart.findIndex(p => p.id === product.id);";
+echo "if(foundIndex > -1){";
+echo "cart[foundIndex].quantity++;";
 echo "} else {";
-echo "cart.push(product);"; //altrimenti lo aggiunge soltanto
+echo "product.quantity = 1;";
+echo "cart.push(product);";
 echo "}";
 echo "} else {";
-echo "cart.push(product);"; //altrimenti lo aggiunge soltanto
+echo "cart.push(product);";
 echo "}";
-echo "sessionStorage.setItem('cart', JSON.stringify(cart));"; //alla fine salva l'array nel sessionStorage
-echo "addToSessionCart(cart);"; //richiamiamo il metodo che aggiunge il prodotto al carrello
+echo "sessionStorage.setItem('cart', JSON.stringify(cart));";
+echo "addToSessionCart(cart);";
 echo "}";
-echo "function addToSessionCart(cart){";
-echo "var http = new XMLHttpRequest();"; //questo metodo crea un nuovo oggetto XMLHttpRequest
-echo "http.onreadystatechange = function(){"; //se la richiesta è stata completata
-echo "if(this.readyState == 4 && this.status == 200){"; //e la risposta è stata ricevuta
-echo "console.log('prodotto aggiunto al carrello');"; //stampa a console
-echo "};";
-echo "http.open('GET', 'cart.php?cart=' + JSON.stringify(cart), true);"; //prepara la richiesta GET che invia l'array al file cart.php
-echo "http.send();"; //e la invia
-echo "}";
-echo "</script>";
-
-
-foreach ($products_data as $product_data) {
-
-    $product = new Product(
-        $product_data["thumbnail"],
-        $product_data["title"],
-        $product_data["description"],
-        $product_data["price"],
-        $product_data["id"],
-
-    );
-
-    $products[] = $product;
-}
-
-echo "<div class='wrapper'";
-foreach ($products as $product) {
-    $product = new Product($thumbnail, $title, $description, $price, $id);
-    echo "<div class='card'>";
-    echo "<img src=" . $product->thumbnail . "/>";
-    echo "<h2>" . $product->title . "</h2>";
-    echo "<p>" . $product->description . "</p>";
-    echo "<p>" . $product->price . "</p>";
-    echo "<button onclick='. $product->addToCart($product) .'>Add to cart</button>"; //il json_encode trasforma l'array in una stringa JSON
-
-    echo "</div>";
-
-}
-echo "</div>";
-
-
-
-
-
+//XMLHTTPREQUEST è un oggetto che permette di inviare richieste HTTP asincrone
+echo 'function addToSessionCart(cart) {';
+echo '    var xmlhttp = new XMLHttpRequest();';
+echo '    xmlhttp.onreadystatechange = function() {';
+echo '        if (this.readyState == 4 && this.status == 200) {';
+echo '            console.log("Cart updated successfully");';
+echo '        }';
+echo '    };';
+echo '    xmlhttp.open("GET", "cart.php?cart=" + JSON.stringify(cart), true);';
+echo '    xmlhttp.send();';
+echo '}';
+echo '</script>';
 ?>
+
+<div class='wrapper'>
+    <?php
+    foreach ($products_data as $product_data) {
+        $product = new Product(
+            $product_data["thumbnail"],
+            $product_data["title"],
+            $product_data["description"],
+            $product_data["price"],
+            $product_data["id"]
+        );
+        $products[] = $product;
+        echo "<div class='card'>";
+        echo "<img src=" . $product->thumbnail . "/>";
+        echo "<h2>" . $product->title . "</h2>";
+        echo "<p>" . $product->description . "</p>";
+        echo "<p>" . $product->price . "</p>";
+        ?>
+        <button onclick='addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)'>Add to cart</button>
+    </div>
+    <?php
+    }
+    ?>
+</div>
