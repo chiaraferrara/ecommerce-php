@@ -13,6 +13,7 @@ echo "product.quantity = 1;";
 echo "cart.push(product);";
 echo "}";
 echo "} else {";
+    
 echo "cart.push(product);";
 echo "}";
 echo "sessionStorage.setItem('cart', JSON.stringify(cart));";

@@ -7,5 +7,6 @@
 </head>
 <body>
     <h1>Carrello</h1>
+    <?php include("cartlist.php")?>
 </body>
 </html>
