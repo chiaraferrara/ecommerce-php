@@ -79,25 +79,43 @@ class Product
     }
 
 
-    function addToCart($product, $quantity)
+    // function addToCart($product, $quantity)
+    // {
+    //     $prodIndex = $this->findProductIndex($product->id);
+    //     if ($prodIndex !== false) {
+    //         $this->cart[$prodIndex]['quantity'] += $quantity;
+    //     } else {
+    //         $this->cart[] = [
+    //             'product' => $product,
+    //             'quantity' => $quantity
+    //         ];
+    //         $this->addToSessionCart($this->cart);
+    //     }
+    // }
+
+
+    function addToCart($productData)
     {
+        $product = json_decode($productData);
         $prodIndex = $this->findProductIndex($product->id);
-        if ($prodIndex == true) {
-            $this->cart[$prodIndex]['quantity'] += $quantity;
+    
+        if ($prodIndex !== false) {
+
+            $this->cart[$prodIndex]['quantity'] += 1;
         } else {
+
             $this->cart[] = [
                 'product' => $product,
-                'quantity' => $quantity
+                'quantity' => 1
             ];
         }
+    
         $this->addToSessionCart($this->cart);
     }
-
 
     function addToSessionCart($cart)
     {
         $_SESSION['cart'] = $cart;
-        var_dump($_SESSION['cart']);
     }
 
     function pay(){
@@ -110,6 +128,10 @@ class Product
             $total += $cartProduct['product']->price * $cartProduct['quantity'];
         }
         return $total;
+    }
+
+    function getCart(){
+        return $_SESSION['cart'];
     }
 
 }
