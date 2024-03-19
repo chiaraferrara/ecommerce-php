@@ -16,12 +16,13 @@ if (isset($_GET['cart'])) {
 
 ?>
 
+<?php echo '<link rel="stylesheet" type="text/css" href="style.css">'; ?>
 <div class="wrapper">
     <?php
     foreach ($_SESSION['cart'] as $product) {
         echo '<div class="card">';
-        echo '<img src="' . $product['image'] . '"/>';
-        echo '<h5>' . $product['title'] . '</h5>';
+        echo '<img src="' . $product['thumbnail'] . '"/>';
+        echo '<h2>' . $product['title'] . '</h2>';
         echo '<p>' . $product['description'] . '</p>';
         echo '<p>' . $product['price'] . '</p>';
         echo '</div>';
