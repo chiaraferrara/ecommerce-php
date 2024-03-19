@@ -22,22 +22,35 @@ class Product
     }
 
 
-    function addToCart($product)
-    {
-        $cartItem = array(
-            'thumbnail' => $this->thumbnail,
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'price' => $this->price,
+    // function addToCart($product)
+    // {
+    //     $cartItem = array(
+    //         'thumbnail' => $this->thumbnail,
+    //         'id' => $this->id,
+    //         'title' => $this->title,
+    //         'description' => $this->description,
+    //         'price' => $this->price,
 
 
-        );
+    //     );
 
+    //     if(!isset($_SESSION)) {
+    //        session_start();
+    //     }
+    //     //se non esiste cart lo inizializza come array
+    //     if(!isset($_SESSION['cart'])) {
+    //         $_SESSION['cart'] = [];
+    //     }
 
-        $_SESSION['cart'][] = $cartItem;
-
-    }
+    //     //aggiunge l'elemento al cart
+    //     $foundIndex = array_search($product->id, array_column($_SESSION['cart'], 'id'));
+    //     if ($foundIndex === false) {
+    //         $_SESSION['cart'][] = $cartItem;
+    //         echo "<script>console.log('Prodotto aggiunto al carrello: " . $product->title . "');</script>";
+    //     } else {
+    //         echo "<script>console.log('Il prodotto è già nel carrello: " . $product->title . "');</script>";
+    //     }
+    // }
 
 
 
@@ -101,7 +114,7 @@ echo '</script>';
         echo "<p>" . $product->description . "</p>";
         echo "<p>" . $product->price . "</p>";
         ?>
-        <button onclick='addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)'>Add to cart</button>
+        <?php echo "<button onclick='addToCart(". json_encode($product) .")'>Add to cart</button>"; ?>
     </div>
     <?php
     }
